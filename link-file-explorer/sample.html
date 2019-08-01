@@ -1,0 +1,58 @@
+<!-- Simple Use Case feel free to modify --> 
+<html>
+	<head>
+		<meta charset="UTF-8" />
+	</head>
+	<body>
+			<!--Standard functionality does not work as expected-->
+			<h2>Standard File Explorer Solution</h2>
+			<p>A typical example of the file explorer returning an Incorrect path value. Try selecting a file and see what path returns.</p>
+			<input type="file" id="file_name" name="fileName" onchange="setStandardFilePath();"><br>
+			<input type="text" name="filePath" id="file_path_input"><br>
+			<p>try to manually correct the filepath and open as link</p>
+			<button  onclick="setLinkFilePath();">Update link file path</button>
+			<a href="" id="file_path_link" >File Link</a>
+			<script>
+				//fires when a typical file explorer has selected a file
+				function setStandardFilePath(){
+					//initializes the filename with selected item
+					var fileName = document.getElementById('file_name').value;
+					//returns a false path to input field
+					document.getElementById('file_path_input').value = fileName;
+				}
+
+				function setLinkFilePath(){
+					//updates link href ...still won't work if the path is corrected
+					document.getElementById('file_path_link').href = document.getElementById('file_path_input').value;
+					document.getElementById('file_path_link').innerHTML = document.getElementById('file_path_input').value;	
+				}
+			</script>
+
+
+			<h2>Working File Explorer Solution</h2>
+			<p>While the typical solution above does not provide the file path you are looking for, this can be acheieved with the solution below.<br/>
+			To open the file, make sure you are running the file-opener-client on your local machine	
+			</p>		
+			<!-- Submit to Link Client WebService-->
+			<!--default port is 18080 -->			
+			<button onclick="selectFileExplorer()">Select File</button><br />
+			<form action="http://localhost:18080/link/open/" method="POST">
+				<input type="text" name="file" id="selected_path" />
+				<button type="submit">Open File</button>
+			</form>
+			<script>
+				//creates a window object of the file explorer
+				var win;
+				//opens file explorer
+				function selectFileExplorer(){					
+					win = window.open("fileExplorer.jsp", "File Manager", "height=550,width=600");						
+					win.onload =function(){		
+						win.document.getElementById("open_selected_file").addEventListener("click", function(){								
+							document.getElementById("selected_path").value=win.document.getElementById("current_dir").value			
+						}); 
+					}							
+				}					
+			</script>
+
+	</body>
+</html>
