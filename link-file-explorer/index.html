@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+	</head>
+	<body>
+			<!-- Simple implementation. Feel free to modify --> 
+			<h2>Working File explorer test case</h2>
+			<p>The code below demonstrates the feature you are looking for</p>		
+			<!-- Submit to Link Client WebService-->
+			
+			<!--default port is 18080 -->			
+			<button onclick="selectFileExplorer()">Select File</button><br />
+			<form action="http://localhost:18080/link/open/" method="POST">
+				<input type="text" name="file" id="selected_path" />
+				<button type="submit">Open File</button>
+			</form>
+			<script>
+					//creates a window object of the file explorer
+					var win;
+					//opens file explorer
+					function selectFileExplorer(){					
+						win = window.open("fileExplorer.jsp", "File Manager", "height=550,width=600");						
+						win.onload =function(){		
+							win.document.getElementById("open_selected_file").addEventListener("click", function(){								
+								document.getElementById("selected_path").value=win.document.getElementById("current_dir").value			
+							}); 
+						}							
+					}					
+			</script>
+	</body>
+</html>
