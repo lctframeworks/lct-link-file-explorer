@@ -2,10 +2,7 @@
 <!DOCTYPE html>
 <html>
 <body>
-	<!--
-		<input type="hidden" id="sub_Dir" value="" />
-	-->
-	<input id="sub_Dir" type="hidden" value="" />
+	<input type="hidden" id="sub_Dir" value="" />
 	<div>		
 		<select id="drive" value="drive" onchange="changeDrive(this)">
 			<option>Select Disk</option>
@@ -21,9 +18,9 @@
 		</iframe>
 	</div>	
 	
-	<div style="position:fixed:bottom:0px">File: <a ></a></div>
+	<div style="position:fixed;bottom:0px">File: <a ></a></div>
 	<script>
-						
+
 		function changeDrive(e){
 			//resubmits iframe to pass disk partition argument
 			document.getElementById("file_windows_explorer").src="windowsExplorer.jsp"+"?drive="+e.value;
@@ -47,11 +44,27 @@
 					if(event.target.getAttribute("class")=="sub_dir"){
 						// is a directory
 						
+						var currentURL = document.getElementById("file_windows_explorer").src;	
+						var subDir = document.getElementById("sub_Dir").value;
+						var selected = event.target.getAttribute("id");
+						var cdParam = "&cd=" 
+
 						//sets the hidden field value to the selected subdirectory
-						document.getElementById("sub_Dir").value+=""+event.target.getAttribute("id");
+						document.getElementById("sub_Dir").value+=""+event.target.getAttribute("id")+"/";
 						
-						//refreshes 
-						document.getElementById("file_windows_explorer").src=document.getElementById("file_windows_explorer").src+"&cd="+document.getElementById("sub_Dir").value;
+						/*
+						alert(currentURL);
+						alert(document.getElementById("sub_Dir").value);
+						alert(currentURL.split("&")[0]);
+						*/
+
+						//sets refresh URL, split array is a temporary workaround to get only one CD get request in the URL
+						var iframeURL = currentURL.split("&")[0]+cdParam+document.getElementById("sub_Dir").value;
+						
+						/*alert(iframeURL);*/
+
+						//refreshes windows explorer with updated URL
+						document.getElementById("file_windows_explorer").src=iframeURL;
 
 						//alert(document.getElementById("file_windows_explorer").src);
 					}else{
